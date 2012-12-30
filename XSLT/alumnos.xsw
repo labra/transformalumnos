@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="iso-8859-1"?> <!-- -*- mode: nxml -*- -->
+<xsl:stylesheet version="1.0" 
+     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+     xmlns:a="http://www.uniovi.es/alumnos"
+>
+
+<xsl:output method="xml"  
+	    encoding="iso-8859-1" 
+	    indent="yes"/>
+ 
+
+<xsl:template match="a:alumnos">
+    <wml>
+
+<template>
+   <do type="prev" label="back">
+      <prev />
+   </do>
+</template>
+
+   <card id="principal" title="Principal">
+   <do type="accept"><next/></do>
+   <p>Notas del curso: 
+           <xsl:element name="a">
+              <xsl:attribute name="href"><xsl:value-of select="a:curso/@href"/></xsl:attribute>
+              <xsl:value-of select="a:curso"/>
+           </xsl:element>
+   </p>
+   <a href="#c1">Siguiente</a> 
+   </card>
+
+   <xsl:apply-templates select="a:alumno"/>
+
+    </wml>
+  </xsl:template>
+
+ <xsl:template match="a:alumno">
+
+  <xsl:element name="card">
+   <xsl:attribute name="id">c<xsl:value-of select="position()"/></xsl:attribute>
+   <xsl:attribute name="title">DNI <xsl:value-of select="@dni"/></xsl:attribute>
+   <p><xsl:value-of select="a:apellidos"/>, <xsl:value-of select="a:nombre"/></p>
+   <p>Nota: <xsl:value-of select="a:nota"/></p>
+   <xsl:if test="position()!=last()">
+     <xsl:element name="a">
+     <xsl:attribute name="href">#c<xsl:value-of select="position()+1"/></xsl:attribute>
+           Siguiente</xsl:element>
+   </xsl:if>
+ </xsl:element>
+  
+</xsl:template>
+
+</xsl:stylesheet>

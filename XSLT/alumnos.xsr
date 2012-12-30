@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?> <!-- -*- mode: nxml -*- -->
+<!-- Extract content to obtain RDF descriptions -->
+
+<xsl:stylesheet version="1.0" 
+     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:a="http://www.uniovi.es/alumnos"
+     xmlns:c="http://www.di.uniovi.es/~labra/semweb/curso#"
+     xml:base="http://www.uniovi.es/~labra/semweb/curso"
+>
+
+<xsl:output method="xml"  
+	    encoding="iso-8859-1" 
+	    indent="yes"/>
+ 
+
+<xsl:template match="a:alumnos">
+  <rdf:RDF>
+    <xsl:element name="owl:Ontology">
+      <xsl:attribute name="rdf:about"></xsl:attribute>
+    </xsl:element>
+    <c:Supenso rdf:ID="suspenso"/>
+    <c:Aprobado rdf:ID="aprobado"/>
+
+    <xsl:element name="c:Curso">
+      <xsl:attribute name="rdf:ID"><xsl:value-of select="generate-id(//a:curso/@href)"/></xsl:attribute>
+      <c:urlCurso><xsl:value-of 
+                        select="a:curso/@href"/></c:urlCurso>
+      <c:nombreCurso><xsl:value-of 
+                       select="a:curso"/></c:nombreCurso>
+    </xsl:element>
+    <xsl:apply-templates select="a:alumno"/>
+  </rdf:RDF>
+</xsl:template>
+
+<xsl:template match="a:alumno">
+  <xsl:element name="c:Estudiante">
+    <xsl:attribute name="rdf:ID">DNI<xsl:value-of select="@dni"/></xsl:attribute>
+    <xsl:element name="c:DNI">
+      <xsl:value-of select="@dni"/>
+    </xsl:element>
+    <xsl:element name="c:email">
+      <xsl:value-of select="a:email"/>
+    </xsl:element>
+    <xsl:element name="c:Nombre">
+      <xsl:value-of select="a:nombre"/>
+    </xsl:element>
+    <xsl:element name="c:Apellidos">
+      <xsl:value-of select="a:apellidos"/>
+    </xsl:element>
+   <xsl:element name="c:tieneNota">
+     <xsl:attribute name="rdf:resource">#<xsl:value-of select="generate-id()"/></xsl:attribute>
+    </xsl:element> 
+  </xsl:element>
+
+  <xsl:element name="c:Nota">
+      <xsl:attribute name="rdf:ID"><xsl:value-of select="generate-id()"/></xsl:attribute>
+       <xsl:element name="c:valorNota">
+	 <xsl:variable name="vnota"><xsl:value-of select="a:nota"/></xsl:variable>
+	 <xsl:attribute name="rdf:resource">
+	 <xsl:choose>
+	   <xsl:when test="$vnota &lt; 5">#suspenso</xsl:when>
+	   <xsl:otherwise>#aprobado</xsl:otherwise>
+	 </xsl:choose>
+	 </xsl:attribute>
+       </xsl:element> 
+       <xsl:element name="c:esNotaDe">
+         <xsl:attribute 
+	     name="rdf:resource">#<xsl:value-of select="generate-id(//a:curso/@href)"/>
+	 </xsl:attribute>
+       </xsl:element> 
+    </xsl:element>
+
+</xsl:template>
+
+</xsl:stylesheet>

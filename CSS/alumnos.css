@@ -1,0 +1,39 @@
+
+h1 { 	font-size: 200%;
+	font-family: corsiva; 
+	color: white;
+	background: green;
+	text-align: center;
+}
+
+h1 a:link { color: yellow; }
+h1 a:hover { color: red; }
+
+a:link    { color: green }    
+a:hover   { background: green; color: white; } 
+
+div.tablaCentral { 
+	text-align: center;
+	color: green; 
+ }
+
+table { 	margin-left:auto;
+	margin-right: auto;
+	border: outset 3px; 
+	border-collapse: collapse; 
+	table-layout : auto;
+	text-align: left;
+	}
+
+
+td { 
+	border-top: inset 3px ;
+	padding: 2px;
+}
+
+td.final {
+ font-style="italic";
+ color: blue;
+}
+
+

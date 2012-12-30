@@ -1,0 +1,125 @@
+<?xml version="1.0" 
+      encoding="iso-8859-1"?> <!-- -*- mode: nxml -*- -->
+
+<xsl:stylesheet version="1.0" 
+     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+     xmlns:a="http://www.uniovi.es/alumnos"
+>
+
+<xsl:output method="xml"  
+	    encoding="iso-8859-1" 
+	    indent="yes"/>
+ 
+  <xsl:template match="a:alumnos">
+   <xsl:element name="X3D">
+    <xsl:attribute name="version">3.0</xsl:attribute>
+     <Scene>
+     <Group>
+       <xsl:element name="Viewpoint">
+	 <xsl:attribute name="description">Hola</xsl:attribute>
+	 <xsl:attribute name="position">0 -10 50</xsl:attribute>
+       </xsl:element>
+       <xsl:element name="Background">
+	 <xsl:attribute name="groundAngle">1.309, 1.571</xsl:attribute>
+	 <xsl:attribute name="groundColor">0.1 0.1 0, 0.4 0.2 0.2, 0.6 0.6 0.6 </xsl:attribute>
+	 <xsl:attribute name="skyAngle">1.309, 1.571 </xsl:attribute>
+	 <xsl:attribute name="skyColor">0 0.2 0.7, 0 0.5 1, 1 1 1</xsl:attribute>
+       </xsl:element>
+       <xsl:element name="NavigationInfo">
+	 <xsl:attribute name="type">ANY</xsl:attribute>
+       </xsl:element>
+      <Transform translation="0 0 0">
+        <xsl:element name="Anchor">
+	  <xsl:attribute name="description">URL del curso</xsl:attribute>
+	  <xsl:attribute name="url"><xsl:value-of select="a:curso/@href"/></xsl:attribute>
+        <Shape>
+	  <xsl:element name="Text">
+	    <xsl:attribute 
+	        name="string">Notas del curso: <xsl:value-of select="a:curso"/>
+	    </xsl:attribute>
+	  </xsl:element>
+          <Appearance>
+            <Material diffuseColor="0.1 0.5 1"/>
+          </Appearance>
+        </Shape>
+        </xsl:element>
+       </Transform>
+
+       <Transform translation='10 -10 -1'> 
+       <Shape> 
+       <Box size="30 30 0.3"/> 
+        <Appearance> 
+        <Material diffuseColor='1 1 0.6'/> 
+        </Appearance> 
+       </Shape> 
+  </Transform> 
+
+      <xsl:apply-templates select="a:alumno" />
+    </Group>
+
+ <Transform DEF='EarthCoordinateSystem' translation="-5 0 10" > 
+    <Group DEF='MiniWorld'> 
+    <Shape> 
+      <Appearance> 
+          <ImageTexture DEF="Tierra" url="Images/tierra.png"/> 
+      </Appearance>  
+    <Sphere radius="3" /> 
+    </Shape> 
+    </Group> 
+   </Transform>
+ <TimeSensor DEF='OrbitalTimeInterval' 
+	     cycleInterval='12.0' 
+	     loop='true' /> 
+  <OrientationInterpolator 
+      DEF='SpinThoseThings' 
+      key='0.00 0.25 0.50 0.75 1.00' 
+      keyValue='0 1 0 0, 0 1 0 1.5708, 0 1 0 3.14159, 0 1 0 4.7123889, 0 1 0 6.2831852' 
+       
+      /> 
+  <ROUTE 
+    fromNode='OrbitalTimeInterval' 
+    fromField='fraction_changed' 
+    toNode='SpinThoseThings' 
+    toField='set_fraction'/> 
+  <ROUTE fromNode='SpinThoseThings' 
+       fromField='value_changed' 
+       toNode='EarthCoordinateSystem' 
+       toField='rotation'/> 
+
+  </Scene>
+ </xsl:element>
+</xsl:template>
+
+<xsl:template match="a:alumno">
+  <xsl:element name="Transform">
+    <xsl:attribute name="translation">0 <xsl:value-of select="position()*(-2)"/> 0</xsl:attribute>
+    <Shape>
+    <xsl:element name="Text">
+  <xsl:attribute name="string">
+    <xsl:value-of select="a:apellidos"/>, <xsl:value-of select="a:nombre"/>
+  </xsl:attribute>
+  </xsl:element>
+    <Appearance>
+            <Material diffuseColor="0.9 0 0.6"/>
+          </Appearance>
+  </Shape>
+  </xsl:element>
+
+  <xsl:element name="Transform">
+    <xsl:attribute name="translation">13 
+       <xsl:value-of select="position()*(-2)"/> 0</xsl:attribute>
+    <Shape>
+    <xsl:element name="Text">
+    <xsl:attribute name="string">
+     <xsl:value-of select="a:nota"/>
+    </xsl:attribute>
+  </xsl:element>
+          <Appearance>
+            <Material diffuseColor="0 0 1"/>
+          </Appearance>
+  </Shape>
+  </xsl:element>
+
+</xsl:template>
+
+</xsl:stylesheet>

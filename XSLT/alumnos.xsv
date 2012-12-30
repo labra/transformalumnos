@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="iso-8859-1"?> <!-- -*- mode: nxml -*- -->
+
+<xsl:stylesheet version="1.0" 
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+     xmlns:xlink="http://www.w3.org/1999/xlink" 
+     xmlns:a="http://www.uniovi.es/alumnos"
+>
+
+<xsl:output method="xml"  
+	    encoding="iso-8859-1" 
+	    indent="yes"/>
+ 
+
+<xsl:template match="a:alumnos">
+<xsl:element name="svg">
+    <xsl:attribute name="height"><xsl:value-of select="count(//a:alumno)*1.5"/>cm</xsl:attribute>
+    <xsl:attribute name="width">100%</xsl:attribute>
+     <xsl:attribute name="viewBox">
+       <xsl:text>0 0 </xsl:text>
+       <xsl:value-of select="20 * 100"/><xsl:text> </xsl:text>
+       <xsl:value-of select="count(//a:alumno)*100 + 300"/>
+      </xsl:attribute> -->
+ <desc>
+  <xsl:value-of select="a:curso"/>
+ </desc>
+
+<defs>
+  <path id="linea">
+      <animate attributeName="d"
+          id="a1"
+          from="M 100 130 L 200 110 L 300 130 L 400 110 L 500 130 L 600 110 L 700 130 L 800 110 
+                       L 900 130 L 1000 110 L 1100 130 L 1200 110 L 1300 130 L 1400 110 L 1500 130 
+                       L 1600 110 L 1700 130 L 1800 110"
+          to="M 100 130 L 200 150 L 300 130 L 400 150 L 500 130 L 600 150 L 700 130 L 800 150 
+                       L 900 130 L 1000 150 L 1100 130 L 1200 150 L 1300 130 L 1400 150 L 1500 130 
+                       L 1600 150 L 1700 130 L 1800 150"
+         dur="5s"
+         fill="freeze"
+      />
+  </path>
+</defs>
+
+ <text x="50" y="80" font-family="fantasy" font-size="60">
+	<textPath xlink:href="#linea">
+  	   Notas del curso
+	<tspan fill="blue">
+                 <xsl:element name="a">
+	   <xsl:attribute name="xlink:href"><xsl:value-of select="a:curso/@href"/></xsl:attribute>
+	   <xsl:value-of select="a:curso"/>
+	</xsl:element>
+    </tspan>
+    </textPath>
+ </text>
+
+
+      <xsl:element name="rect">
+            <xsl:attribute name="x">25</xsl:attribute>
+            <xsl:attribute name="y">5</xsl:attribute>
+            <xsl:attribute name="rx">50</xsl:attribute>
+            <xsl:attribute name="ry">50</xsl:attribute>
+            <xsl:attribute name="width">1810</xsl:attribute>
+            <xsl:attribute name="height"><xsl:value-of select="count(//a:alumno) * 100 + 260"/>
+	     </xsl:attribute>
+	<xsl:attribute name="stroke">blue</xsl:attribute>
+	<xsl:attribute name="fill">none</xsl:attribute>
+              <xsl:attribute name="stroke-width">3</xsl:attribute>
+      </xsl:element>
+
+      <xsl:element name="rect">
+            <xsl:attribute name="x">40</xsl:attribute>
+            <xsl:attribute name="y">20</xsl:attribute>
+            <xsl:attribute name="rx">50</xsl:attribute>
+            <xsl:attribute name="ry">50</xsl:attribute>
+            <xsl:attribute name="width">1780</xsl:attribute>
+            <xsl:attribute name="height"><xsl:value-of select="count(//a:alumno) * 100 + 230"/>
+	     </xsl:attribute>
+	<xsl:attribute name="stroke">blue</xsl:attribute>
+	<xsl:attribute name="fill">none</xsl:attribute>
+              <xsl:attribute name="stroke-width">3</xsl:attribute>
+      </xsl:element>
+
+     <g font-family="serif" fill="green"
+           font-size="50" >
+     <xsl:apply-templates select="a:alumno"/>
+     </g>
+ </xsl:element>
+</xsl:template>
+
+ <xsl:template match="a:alumno">
+   <xsl:element name="text">
+       <xsl:attribute name="x">100</xsl:attribute>
+        <xsl:attribute name="y"><xsl:value-of select="position() * 100 + 200"/></xsl:attribute>
+     <xsl:value-of select="@dni"/> 
+   </xsl:element>
+
+   <xsl:element name="text">
+       <xsl:attribute name="x">500</xsl:attribute>
+        <xsl:attribute name="y"><xsl:value-of select="position() * 100 + 200"/></xsl:attribute>
+      <xsl:element name="a">
+     <xsl:attribute name="xlink:href">mailto:<xsl:value-of select="a:email"/></xsl:attribute>
+     <xsl:value-of select="a:apellidos"/>, <xsl:value-of select="a:nombre"/>
+   </xsl:element>
+   </xsl:element>
+
+   <xsl:element name="text">
+       <xsl:attribute name="x">1400</xsl:attribute>
+        <xsl:attribute name="y"><xsl:value-of select="position() * 100 + 200"/></xsl:attribute>
+     <xsl:value-of select="a:nota"/> 
+   </xsl:element>
+
+</xsl:template>
+
+</xsl:stylesheet>

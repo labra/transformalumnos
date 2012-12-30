@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1"?> 
+
+<xsl:stylesheet version="1.0" 
+     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+     xmlns:a="http://www.uniovi.es/alumnos"
+	 xmlns="http://www.opengis.net/kml/2.2">
+
+<xsl:output method="xml"  
+	    encoding="iso-8859-1" 
+	    indent="yes"/>
+ 
+
+<xsl:template match="a:alumnos">
+  <kml>
+   <Document>
+    <xsl:apply-templates select="a:alumno"/>
+   </Document>
+  </kml>
+</xsl:template>
+
+<xsl:template match="a:alumno">
+ <Placemark>
+  <name><xsl:value-of select="a:nombre" /><xsl:text> </xsl:text><xsl:value-of select="a:apellidos" />
+  </name>
+  <Point>
+   <coordinates>
+    <xsl:value-of select="a:long" />,<xsl:value-of select="a:lat" /> 
+   </coordinates>
+  </Point>
+ </Placemark>
+</xsl:template>
+
+</xsl:stylesheet>

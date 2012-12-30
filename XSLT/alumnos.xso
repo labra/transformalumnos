@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsl:stylesheet version="1.0" 
+     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+     xmlns:a="http://www.uniovi.es/alumnos"
+     >
+
+<xsl:output method="xml"  encoding="iso-8859-1" indent="yes"/>
+ 
+<xsl:template match="a:alumnos">
+ <vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
+  <meta name="description" content="Student's List"/>
+  <form>
+    <block>
+    <prompt>
+      Hello World. This is my first telephone application.
+    </prompt>
+    </block>
+  </form>
+ </vxml>
+</xsl:template>
+
+<xsl:template match="a:alumno">
+</xsl:template>
+
+</xsl:stylesheet>
